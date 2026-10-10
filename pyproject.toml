@@ -24,7 +24,7 @@ triage = "triage.cli:main"
 include = ["triage*"]
 
 [tool.setuptools.package-data]
-triage = ["data/*.json", "prompts/*.md"]
+triage = ["data/*.json", "data/fake_scripts/*.json", "prompts/*.md"]
 
 [tool.ruff]
 line-length = 100

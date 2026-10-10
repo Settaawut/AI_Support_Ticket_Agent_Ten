@@ -22,6 +22,13 @@ def _env_float(name: str, default: float) -> float:
     return float(raw) if raw else default
 
 
+def _env_temperature(default: float | None) -> float | None:
+    raw = os.getenv("TRIAGE_TEMPERATURE")
+    if raw is None or raw == "":
+        return default
+    return None if raw.lower() == "none" else float(raw)
+
+
 def _env_int(name: str, default: int) -> int:
     raw = os.getenv(name)
     return int(raw) if raw else default
@@ -30,7 +37,7 @@ def _env_int(name: str, default: int) -> int:
 @dataclass(frozen=True)
 class Settings:
     model: str = "gpt-4o-mini"
-    temperature: float = 0.0
+    temperature: float | None = 0.0  # None = omit (reasoning models reject it)
     max_iterations: int = 6
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 3
@@ -45,6 +52,7 @@ class Settings:
     def from_env(cls) -> Settings:
         return cls(
             model=os.getenv("OPENAI_MODEL", cls.model),
+            temperature=_env_temperature(cls.temperature),
             max_iterations=_env_int("TRIAGE_MAX_ITERATIONS", cls.max_iterations),
             llm_timeout_s=_env_float("TRIAGE_LLM_TIMEOUT_S", cls.llm_timeout_s),
             confidence_threshold=_env_float(
