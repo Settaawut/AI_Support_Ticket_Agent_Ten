@@ -1,0 +1,44 @@
+{
+  "description": "Enterprise Thai customer: HTTP 500 for the whole team; status page contradicts internal incident feed.",
+  "turns": [
+    {
+      "tool_calls": [
+        {"name": "get_customer_history", "arguments": {"customer_id": "cus_1002"}},
+        {"name": "check_system_status", "arguments": {"region": "asia"}},
+        {"name": "search_knowledge_base", "arguments": {"query": "ระบบเข้าไม่ได้ error 500 หน้าสถานะ", "language": "th"}}
+      ]
+    },
+    {
+      "final": {
+        "urgency": "critical",
+        "product": "Web app & API (Asia region)",
+        "issue_type": "outage",
+        "sentiment": "frustrated",
+        "sentiment_trend": "escalating",
+        "language": "th",
+        "intents": [
+          {
+            "summary": "Whole team gets HTTP 500 on all browsers and devices; their own customers are affected",
+            "issue_type": "outage",
+            "action": "escalate_to_human",
+            "target_team": "incident_response",
+            "kb_ids": ["KB-ERR-002", "KB-STAT-002"]
+          },
+          {
+            "summary": "Asks whether the Asia region has a problem although the status page says operational",
+            "issue_type": "outage",
+            "action": "escalate_to_human",
+            "target_team": "incident_response",
+            "kb_ids": ["KB-STAT-002"]
+          }
+        ],
+        "action": "escalate_to_human",
+        "target_team": "incident_response",
+        "draft_response": "ขออภัยเป็นอย่างยิ่งในความไม่สะดวกครับ เราตรวจสอบแล้วพบว่าขณะนี้มีปัญหาที่ส่งผลกระทบต่อการใช้งานในภูมิภาค Asia และทีมวิศวกรกำลังเร่งตรวจสอบอยู่ครับ หน้าสถานะระบบอาจอัปเดตช้ากว่าเหตุการณ์จริง และปัญหานี้ไม่ได้เกิดจากเบราว์เซอร์หรือเครื่องของคุณครับ เราได้ส่งเรื่องของคุณให้ทีมแก้ไขเหตุขัดข้องเป็นกรณีเร่งด่วนแล้ว และทีมงานจะติดต่อกลับหาคุณโดยตรงครับ",
+        "kb_citations": ["KB-STAT-002", "KB-ERR-002"],
+        "reasoning": "Public status page reports Asia as operational, but the internal feed has an active sev1 incident with elevated HTTP 500s on web and API in Asia, which matches errors across browsers and colleagues. Enterprise customer (45 seats) fully blocked, with their own customers affected and a major demo today: critical, escalate to incident response.",
+        "confidence": 0.95
+      }
+    }
+  ]
+}

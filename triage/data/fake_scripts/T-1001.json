@@ -1,0 +1,44 @@
+{
+  "description": "Billing: three $29.99 holds, Pro not activated, deadline + chargeback threat.",
+  "turns": [
+    {
+      "tool_calls": [
+        {"name": "get_customer_history", "arguments": {"customer_id": "cus_1001"}},
+        {"name": "search_knowledge_base", "arguments": {"query": "duplicate pending charges after failed upgrade", "language": "en"}},
+        {"name": "search_knowledge_base", "arguments": {"query": "Pro plan export features", "language": "en"}}
+      ]
+    },
+    {
+      "final": {
+        "urgency": "high",
+        "product": "Billing / Pro upgrade",
+        "issue_type": "billing",
+        "sentiment": "angry",
+        "sentiment_trend": "escalating",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "Three $29.99 charges after failed upgrade attempts; wants them reversed today",
+            "issue_type": "billing",
+            "action": "escalate_to_human",
+            "target_team": "billing",
+            "kb_ids": ["KB-BILL-002"]
+          },
+          {
+            "summary": "Pro not activated; needs Pro export for a presentation in 2 hours",
+            "issue_type": "billing",
+            "action": "escalate_to_human",
+            "target_team": "billing",
+            "kb_ids": ["KB-BILL-001", "KB-PLAN-001"]
+          }
+        ],
+        "action": "escalate_to_human",
+        "target_team": "billing",
+        "draft_response": "I'm really sorry about this, and for the wait. I can see three upgrade attempts of $29.99 on your account and that your plan has not been switched to Pro. Pending charges from failed or retried payments are usually temporary authorization holds rather than completed payments, but only our Billing team can confirm which ones were captured and arrange any reversal. I've escalated your case to a Billing specialist as urgent, including your presentation deadline and your concern about the charges, so they can review your account and your Pro access directly.",
+        "kb_citations": ["KB-BILL-002", "KB-BILL-001", "KB-PLAN-001"],
+        "reasoning": "Customer history shows three upgrade attempts (one failed with a hold, two pending authorizations) and no activated subscription, matching the reported three charges. Anger escalated across four messages and now includes a chargeback threat and a 2-hour deadline. Money at risk plus dispute threat requires a Billing human.",
+        "confidence": 0.9
+      }
+    }
+  ]
+}

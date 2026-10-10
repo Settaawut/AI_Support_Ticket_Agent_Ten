@@ -1,0 +1,59 @@
+{
+  "description": "Pro user, friendly: missing Dark option + System Default ignores macOS (bug), scheduled dark mode (feature request).",
+  "turns": [
+    {
+      "tool_calls": [
+        {"name": "get_customer_history", "arguments": {"customer_id": "cus_1003"}},
+        {"name": "search_knowledge_base", "arguments": {"query": "dark mode appearance settings plans", "language": "en"}},
+        {"name": "search_knowledge_base", "arguments": {"query": "system default theme does not follow macOS dark mode", "language": "en"}},
+        {"name": "search_knowledge_base", "arguments": {"query": "feature request schedule dark mode", "language": "en"}}
+      ]
+    },
+    {
+      "final": {
+        "urgency": "low",
+        "product": "Desktop app (macOS) / Appearance settings",
+        "issue_type": "bug",
+        "sentiment": "positive",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "Is dark mode limited by plan?",
+            "issue_type": "how_to",
+            "action": "auto_respond",
+            "target_team": "none",
+            "kb_ids": ["KB-UI-001"]
+          },
+          {
+            "summary": "'Dark' option missing from Settings > Appearance on app 4.3.0 (KB says all plans have it from 4.2)",
+            "issue_type": "bug",
+            "action": "route_to_specialist",
+            "target_team": "product_engineering",
+            "kb_ids": ["KB-UI-001"]
+          },
+          {
+            "summary": "'System Default' stays light while macOS is in dark mode",
+            "issue_type": "bug",
+            "action": "route_to_specialist",
+            "target_team": "product_engineering",
+            "kb_ids": ["KB-UI-002"]
+          },
+          {
+            "summary": "Feature request: schedule dark mode (auto-switch at 6pm)",
+            "issue_type": "feature_request",
+            "action": "route_to_specialist",
+            "target_team": "product_engineering",
+            "kb_ids": ["KB-UI-001", "KB-FR-001"]
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "product_engineering",
+        "draft_response": "Thanks for the detailed notes, and you're not missing anything: dark mode isn't a Pro-only feature. From app version 4.2, Settings > Appearance should offer three options on every plan (Light, Dark and System Default), and System Default should follow your Mac's appearance. As you're on 4.3.0 and only see two options, this looks like a bug. One thing worth trying in the meantime: fully quit and reopen the app after switching your Mac to dark mode. I've passed both issues to our engineering team with your app version so they can investigate. Scheduled switching (for example at 6pm) isn't supported today, so I've logged it as a feature request for our product team. We can't share release dates, but customers are notified if a requested feature ships.",
+        "kb_citations": ["KB-UI-001", "KB-UI-002", "KB-FR-001"],
+        "reasoning": "Friendly Pro customer, no business impact. KB-UI-001 says Light, Dark and System Default exist on all plans from 4.2, yet the customer on 4.3.0 sees no Dark option and System Default ignores macOS: likely bugs for engineering. Scheduled switching is unsupported per KB, so it is a feature request. Plan question answered from KB.",
+        "confidence": 0.85
+      }
+    }
+  ]
+}

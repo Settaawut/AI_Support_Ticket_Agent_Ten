@@ -132,7 +132,8 @@ def legal_threat_escalate(out: LLMTriageOutput, ctx: GuardrailContext) -> Fix | 
 
 
 def prompt_injection_escalate(out: LLMTriageOutput, ctx: GuardrailContext) -> Fix | None:
-    """Attempts to instruct the agent are a red flag; a human should look."""
+    """Attempts to instruct the agent are a red flag: a human looks, and the draft written
+    under that influence is replaced by a neutral holding reply."""
     if not signals.mentions(signals.INJECTION, ctx.text):
         return None
     return require(
@@ -140,6 +141,7 @@ def prompt_injection_escalate(out: LLMTriageOutput, ctx: GuardrailContext) -> Fi
         "Ticket contains instructions aimed at the agent (possible prompt injection)",
         action=Action.ESCALATE_TO_HUMAN,
         team=Team.GENERAL_SUPPORT,
+        also={"draft_response": holding_reply(_reply_language(out, ctx))},
     )
 
 

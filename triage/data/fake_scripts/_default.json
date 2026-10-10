@@ -1,0 +1,22 @@
+{
+  "description": "Used offline for tickets without a script: an unsure model. Guardrails must escalate it.",
+  "turns": [
+    {
+      "final": {
+        "urgency": "medium",
+        "product": "unknown",
+        "issue_type": "other",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [],
+        "action": "route_to_specialist",
+        "target_team": "general_support",
+        "draft_response": "Thank you for contacting us. We have received your request and a specialist will follow up with you.",
+        "kb_citations": [],
+        "reasoning": "Offline default script: no scripted analysis exists for this ticket.",
+        "confidence": 0.3
+      }
+    }
+  ]
+}
