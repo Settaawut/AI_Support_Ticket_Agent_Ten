@@ -1,0 +1,22 @@
+{
+  "description": "Demo: a model that misses the outage on T-1002 (medium urgency, how-to, English reply). Guardrails must correct it.",
+  "turns": [
+    {
+      "final": {
+        "urgency": "medium",
+        "product": "Web app",
+        "issue_type": "how_to",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [],
+        "action": "route_to_specialist",
+        "target_team": "technical_support",
+        "draft_response": "Please clear your browser cache and try again.",
+        "kb_citations": [],
+        "reasoning": "Looks like a browser cache problem.",
+        "confidence": 0.8
+      }
+    }
+  ]
+}

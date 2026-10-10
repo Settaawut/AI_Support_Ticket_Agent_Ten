@@ -1,0 +1,34 @@
+{
+  "description": "Demo: a dangerously wrong model on T-1001 (low urgency, auto-reply, refund promise, invented citation). Guardrails must correct it.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "get_customer_history",
+          "arguments": {
+            "customer_id": "cus_1001"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "low",
+        "product": "Billing",
+        "issue_type": "billing",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [],
+        "action": "auto_respond",
+        "target_team": "none",
+        "draft_response": "No worries! We'll refund all three charges right away and your Pro plan will be active by end of day.",
+        "kb_citations": [
+          "KB-BILL-002"
+        ],
+        "reasoning": "Simple billing question.",
+        "confidence": 0.95
+      }
+    }
+  ]
+}

@@ -71,7 +71,9 @@ Offline, with the scripted model (`python -m triage run --all --offline`):
 | **T-1002** Enterprise, Thailand | **critical** | escalate_to_human → incident_response | `check_system_status(asia)`: the public page says *operational*, but the internal feed has an active sev1 with HTTP 500s (`status_conflict: true`). The reply is in **Thai** and does not reveal the incident ID. |
 | **T-1003** Pro, dark mode | **low** | route_to_specialist → product_engineering | 4 intents: the plan question is answered from the KB (dark mode is not Pro-only); the missing *Dark* option and *System Default* ignoring macOS are routed as bugs; scheduled dark mode is logged as a feature request. No over-escalation. |
 
-What happens when the **model is wrong** is tested too (`tests/test_service.py`):
+What happens when the **model is wrong** is tested too (`tests/test_service.py`). To see it yourself, run
+`python -m triage run --ticket eval/wrong_ai_demo.json --offline`: the scripted model answers T-1001 and T-1002
+dangerously wrong, and the yellow *Guardrail overrides* table shows each correction.
 
 - **T-1001, model says "low, auto_respond, we'll refund all three charges".** Guardrails turn this into high / escalate_to_human with a safe holding reply. The invented citation is also removed.
 - **T-1002, model says "medium, clear your browser cache", in English.** Guardrails turn this into critical / escalate_to_human / incident_response, and the reply is replaced with a Thai holding reply.

@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 
@@ -57,3 +58,23 @@ def test_logs_are_written_as_jsonl(tmp_path):
     main(["run", "--offline", "--json"])
     lines = (tmp_path / "logs" / "triage.jsonl").read_text(encoding="utf-8").splitlines()
     assert any(json.loads(line)["msg"] == "tool_call" for line in lines)
+
+
+def test_wrong_ai_demo_is_corrected_by_guardrails(capsys):
+    """eval/wrong_ai_demo.json: scripted models answer T-1001/T-1002 dangerously wrong."""
+    demo = Path(__file__).resolve().parent.parent / "eval" / "wrong_ai_demo.json"
+    assert main(["run", "--ticket", str(demo), "--offline", "--json"]) == 0
+    t1, t2 = json.loads(capsys.readouterr().out)
+    assert (t1["urgency"], t1["action"], t1["target_team"]) == (
+        "high",
+        "escalate_to_human",
+        "billing",
+    )
+    assert "refund" not in t1["draft_response"].lower()
+    assert (t2["urgency"], t2["action"], t2["target_team"], t2["language"]) == (
+        "critical",
+        "escalate_to_human",
+        "incident_response",
+        "th",
+    )
+    assert t1["guardrail_overrides"] and t2["guardrail_overrides"]
