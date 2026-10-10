@@ -166,8 +166,11 @@ The guardrails never depend on which tools the model chose to call. If the model
    class LookupOrderArgs(BaseModel):
        order_id: str = Field(description="Order id from the ticket")
 
+
    def lookup_order(args: LookupOrderArgs) -> dict[str, Any]:
-       ...  # raise ToolError("not found") for expected failures
+       # raise ToolError("not found") for expected failures
+       return {"order_id": args.order_id, "status": "shipped"}
+
 
    ORDER_TOOL = Tool("lookup_order", "When to use it ...", LookupOrderArgs, lookup_order)
    ```
@@ -182,8 +185,9 @@ The strict JSON schema, argument validation, error handling and tracing come for
    def vip_never_auto(out: LLMTriageOutput, ctx: GuardrailContext) -> Fix | None:
        if "vip" not in ctx.ticket.customer.notes.lower():
            return None
-       return require(out, "VIP account", action=Action.ROUTE_TO_SPECIALIST,
-                      team=Team.ACCOUNT_MANAGEMENT)
+       return require(
+           out, "VIP account", action=Action.ROUTE_TO_SPECIALIST, team=Team.ACCOUNT_MANAGEMENT
+       )
    ```
 2. Append it to `DEFAULT_RULES` in `triage/guardrails/registry.py`. Add a row to the table in `tests/test_guardrails.py`; the "never lowers severity" invariant test then covers it automatically.
 
