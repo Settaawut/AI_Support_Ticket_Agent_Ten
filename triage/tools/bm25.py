@@ -12,57 +12,14 @@ from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-_TOKEN_RE = re.compile(r"[a-z0-9]+|[฀-๿]+")
-_THAI_RE = re.compile(r"[฀-๿]")
-_STOPWORDS = frozenset(
-    [
-        "a",
-        "an",
-        "and",
-        "are",
-        "as",
-        "at",
-        "be",
-        "but",
-        "by",
-        "can",
-        "do",
-        "does",
-        "for",
-        "from",
-        "has",
-        "have",
-        "how",
-        "i",
-        "if",
-        "in",
-        "is",
-        "it",
-        "its",
-        "my",
-        "no",
-        "not",
-        "of",
-        "on",
-        "or",
-        "so",
-        "that",
-        "the",
-        "their",
-        "there",
-        "this",
-        "to",
-        "was",
-        "we",
-        "what",
-        "when",
-        "where",
-        "which",
-        "with",
-        "you",
-        "your",
-    ]
+_TOKEN_RE = re.compile(r"[a-z0-9]+|[\u0e00-\u0e7f]+")
+_THAI_RE = re.compile(r"[\u0e00-\u0e7f]")
+_STOPWORD_TEXT = (
+    "a an and are as at be but by can do does for from has have how i if in is it its my "
+    "no not of on or so that the their there this to was we what when where which with you "
+    "your"
 )
+_STOPWORDS = frozenset(_STOPWORD_TEXT.split())
 
 
 def tokenize(text: str) -> list[str]:
