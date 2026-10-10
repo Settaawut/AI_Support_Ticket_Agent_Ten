@@ -36,7 +36,6 @@ class Settings:
     llm_max_retries: int = 3
     retry_base_delay_s: float = 1.0
     confidence_threshold: float = 0.6
-    kb_top_k: int = 3
     log_level: str = "INFO"
     prices_per_1m: dict[str, tuple[float, float]] = field(
         default_factory=lambda: dict(MODEL_PRICES_PER_1M)
