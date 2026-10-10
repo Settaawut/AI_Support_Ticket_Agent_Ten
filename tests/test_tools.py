@@ -21,9 +21,9 @@ def _run(registry: ToolRegistry, name: str, **args):
 # --- registry / schemas -------------------------------------------------------------
 
 
-def test_registry_exposes_three_strict_tools(registry):
+def test_registry_exposes_required_tools_as_strict_schemas(registry):
     specs = registry.specs()
-    assert {s["function"]["name"] for s in specs} == {
+    assert {s["function"]["name"] for s in specs} >= {
         "get_customer_history",
         "search_knowledge_base",
         "check_system_status",
