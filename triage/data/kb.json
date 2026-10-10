@@ -1,0 +1,100 @@
+[
+  {
+    "id": "KB-BILL-001",
+    "language": "en",
+    "title": "Payment failed when upgrading to Pro",
+    "tags": ["billing", "payment", "upgrade", "card", "declined", "pro"],
+    "body": "Upgrade payments can fail when the card issuer declines the transaction, 3-D Secure verification is not completed, or the billing address does not match. Each failed or retried attempt may place a temporary authorization hold on the card. If the plan still shows Free after a successful charge, the Billing team must verify the payment and activate the subscription manually."
+  },
+  {
+    "id": "KB-BILL-002",
+    "language": "en",
+    "title": "Duplicate or pending charges after a failed upgrade",
+    "tags": ["billing", "duplicate", "pending", "charge", "refund", "authorization", "hold", "dispute"],
+    "body": "Pending charges from failed or retried upgrade attempts are usually authorization holds, not completed payments. Only the Billing team can confirm which charges were captured and arrange reversals; support agents must not promise refunds or timelines. Customers considering a bank dispute should be told that a Billing specialist is reviewing their account."
+  },
+  {
+    "id": "KB-BILL-003",
+    "language": "th",
+    "title": "การชำระเงินล้มเหลวและยอดเรียกเก็บซ้ำ",
+    "tags": ["billing", "payment", "ชำระเงิน", "เรียกเก็บซ้ำ", "บัตร"],
+    "body": "การชำระเงินที่ล้มเหลวหรือการลองชำระซ้ำอาจทำให้เกิดการกันวงเงินชั่วคราวบนบัตร ทีม Billing เท่านั้นที่สามารถตรวจสอบยอดที่ถูกเรียกเก็บจริงและดำเนินการคืนยอดได้"
+  },
+  {
+    "id": "KB-PLAN-001",
+    "language": "en",
+    "title": "What is included in the Pro plan",
+    "tags": ["pro", "plan", "export", "features", "pdf", "pptx", "upgrade"],
+    "body": "The Pro plan adds export to PDF and PPTX, unlimited projects, version history and priority email support. Pro features become available as soon as the subscription is active on the account."
+  },
+  {
+    "id": "KB-STAT-001",
+    "language": "en",
+    "title": "Status page and reporting an outage",
+    "tags": ["status", "outage", "down", "status page", "region", "incident", "500"],
+    "body": "status.company.com shows the public status of each region. The status page can lag behind an incident that is still being investigated. If you cannot access the service, contact support with your region, the error code you see, and whether colleagues are affected. Enterprise customers are routed to the incident team immediately."
+  },
+  {
+    "id": "KB-STAT-002",
+    "language": "th",
+    "title": "หน้าสถานะระบบและการแจ้งปัญหาระบบล่ม",
+    "tags": ["status", "outage", "สถานะ", "ระบบล่ม", "เข้าไม่ได้", "region", "500"],
+    "body": "status.company.com แสดงสถานะของระบบในแต่ละ region หน้าสถานะอาจอัปเดตช้ากว่าเหตุการณ์ที่ทีมกำลังตรวจสอบอยู่ หากเข้าใช้งานไม่ได้ กรุณาแจ้ง region รหัส error และจำนวนผู้ใช้ที่ได้รับผลกระทบ ลูกค้า Enterprise จะถูกส่งต่อไปยังทีมแก้ไขเหตุขัดข้องทันที"
+  },
+  {
+    "id": "KB-ERR-001",
+    "language": "en",
+    "title": "Troubleshooting HTTP 500 errors",
+    "tags": ["error", "500", "server", "login", "access", "browser"],
+    "body": "An HTTP 500 error means the server failed to handle the request. If it appears for one user only, clear the browser cache and retry. If it appears across browsers, devices or for several colleagues, it is likely a service-side problem and should be reported as an outage."
+  },
+  {
+    "id": "KB-ERR-002",
+    "language": "th",
+    "title": "การแก้ปัญหา error 500",
+    "tags": ["error", "500", "เข้าไม่ได้", "เบราว์เซอร์", "server"],
+    "body": "error 500 หมายถึงเซิร์ฟเวอร์ไม่สามารถประมวลผลคำขอได้ หากเกิดกับผู้ใช้คนเดียว ให้ลองล้างแคชของเบราว์เซอร์ หากเกิดกับหลายเบราว์เซอร์ หลายเครื่อง หรือเพื่อนร่วมงานหลายคน มักเป็นปัญหาฝั่งระบบและควรแจ้งเป็นเหตุขัดข้อง"
+  },
+  {
+    "id": "KB-UI-001",
+    "language": "en",
+    "title": "Dark mode and appearance settings",
+    "tags": ["dark mode", "dark", "theme", "appearance", "settings", "light", "system default"],
+    "body": "Go to Settings > Appearance to choose a theme. Three options are available on all plans (Free, Pro and Enterprise) in app version 4.2 and later: Light, Dark and System Default. System Default follows your operating system's light or dark setting. Scheduled theme switching (for example at a set time of day) is not currently supported."
+  },
+  {
+    "id": "KB-UI-002",
+    "language": "en",
+    "title": "System Default theme does not follow my OS",
+    "tags": ["dark mode", "system default", "theme", "macos", "windows", "bug", "appearance"],
+    "body": "After changing the operating system appearance, fully quit and reopen the desktop app so it picks up the new setting. If the app is on version 4.2 or later and still ignores the OS setting after a restart, report it to support with your app version and OS version so engineering can investigate."
+  },
+  {
+    "id": "KB-FR-001",
+    "language": "en",
+    "title": "How feature requests are handled",
+    "tags": ["feature", "request", "suggestion", "roadmap", "idea"],
+    "body": "Feature requests are logged by support and reviewed by the product team. We cannot share release dates for requested features, but customers are notified if the feature ships."
+  },
+  {
+    "id": "KB-ACC-001",
+    "language": "en",
+    "title": "Resetting your password",
+    "tags": ["password", "reset", "login", "account", "access", "forgot"],
+    "body": "Use 'Forgot password' on the sign-in page to receive a reset link by email. Links expire after 30 minutes. If you use SSO, reset your password with your identity provider instead."
+  },
+  {
+    "id": "KB-SEC-001",
+    "language": "en",
+    "title": "Suspicious activity or a compromised account",
+    "tags": ["security", "hacked", "compromised", "breach", "suspicious", "login", "2fa"],
+    "body": "If you suspect your account is compromised, reset your password immediately and enable two-factor authentication. Support escalates every suspected compromise to the Security team, who will contact you directly."
+  },
+  {
+    "id": "KB-DATA-001",
+    "language": "en",
+    "title": "Exporting your workspace data",
+    "tags": ["export", "data", "backup", "csv", "download"],
+    "body": "Workspace admins can export all projects as CSV or JSON from Settings > Workspace > Export. Large exports are emailed as a download link when ready."
+  }
+]

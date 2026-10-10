@@ -1,0 +1,54 @@
+{
+  "cus_1001": {
+    "name": "Jordan Lee",
+    "email": "jordan.lee@example.com",
+    "plan": "free",
+    "subscription_status": "free",
+    "region": "north_america",
+    "seats": 1,
+    "tenure_months": 4,
+    "last_login": "today",
+    "app_version": "web",
+    "prior_tickets": [],
+    "billing_events": [
+      {"when": "3 hours ago", "type": "upgrade_attempt", "plan": "pro", "amount_usd": 29.99, "card_last4": "4242", "status": "payment_failed", "detail": "Issuer returned 'do_not_honor' after authorization hold was placed."},
+      {"when": "2 hours ago", "type": "upgrade_attempt", "plan": "pro", "amount_usd": 29.99, "card_last4": "5555", "status": "authorization_pending", "detail": "Authorization captured but subscription activation webhook failed."},
+      {"when": "2 hours ago", "type": "upgrade_attempt", "plan": "pro", "amount_usd": 29.99, "card_last4": "5555", "status": "authorization_pending", "detail": "Client retry created a second authorization."}
+    ],
+    "flags": ["3 pending charges, 0 activated subscriptions"]
+  },
+  "cus_1002": {
+    "name": "Somchai P.",
+    "email": "it-admin@example.co.th",
+    "plan": "enterprise",
+    "subscription_status": "active",
+    "region": "asia",
+    "seats": 45,
+    "tenure_months": 8,
+    "last_login": "2 hours ago (last successful)",
+    "app_version": "web",
+    "account_manager": "APAC Enterprise Team",
+    "sla": "Enterprise: 1h first response for critical issues",
+    "prior_tickets": [],
+    "billing_events": [
+      {"when": "8 days ago", "type": "invoice_paid", "amount_usd": 4500.0, "status": "paid"}
+    ],
+    "flags": ["enterprise", "first critical issue"]
+  },
+  "cus_1003": {
+    "name": "Alex Morgan",
+    "email": "alex.morgan@example.co.uk",
+    "plan": "pro",
+    "subscription_status": "active",
+    "region": "europe",
+    "seats": 1,
+    "tenure_months": 5,
+    "last_login": "today (daily active)",
+    "app_version": "desktop-macos 4.3.0 (latest)",
+    "prior_tickets": [],
+    "billing_events": [
+      {"when": "12 days ago", "type": "renewal", "amount_usd": 29.99, "status": "paid"}
+    ],
+    "flags": []
+  }
+}

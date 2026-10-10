@@ -1,0 +1,18 @@
+{
+  "public_status_page": {
+    "asia": "operational",
+    "europe": "operational",
+    "north_america": "operational"
+  },
+  "internal_incidents": [
+    {
+      "id": "INC-2041",
+      "region": "asia",
+      "severity": "sev1",
+      "status": "investigating",
+      "started": "about 2 hours ago",
+      "components": ["web-app", "public-api"],
+      "summary": "Elevated HTTP 500 rate on web app and API in asia-southeast-1 after a config rollout. Status page not yet updated."
+    }
+  ]
+}
