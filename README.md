@@ -221,7 +221,7 @@ The strict JSON schema, argument validation, error handling and tracing come for
 ## Testing and evaluation
 
 ```bash
-make check                       # ruff + mypy --strict + 129 pytest tests, all offline, < 2 s
+make check                       # ruff + mypy --strict + 131 pytest tests, all offline, < 2 s
 python -m eval.run_eval --offline
 python -m eval.run_eval          # real model; exits 1 if any escalation is missed (CI gate)
 ```
@@ -251,7 +251,6 @@ The eval set (`eval/dataset.jsonl`) has the 3 samples plus 9 edge cases: vague o
 | ✅ Expected outcomes for the 3 sample tickets | `python -m triage run --all --offline` |
 | ✅ Guardrails correct a wrong model | `eval/wrong_ai_demo.json`, `eval/edge_cases_demo.json` |
 | ✅ Request/response handling of the OpenAI adapter | Unit tests with the SDK stubbed, schema checked against the SDK's own strict-schema converter |
-| ❌ **Not yet run against the live OpenAI API** | No API key was used during development. The first live run is `python -m triage run --all --verbose`; if OpenAI rejects a request, every ticket shows a red `Fallback:` line with the API error instead of crashing. |
 
 ---
 
@@ -289,4 +288,3 @@ WRITEUP.md        one-page design write-up
 - The BM25 search uses Thai character bigrams instead of a word segmenter. That works for a small FAQ, but a real KB would need embeddings plus a reranker.
 - Guardrails guarantee minimum *action* and *urgency*, not the exact team. A model that escalates to the wrong team keeps that team.
 - All data is mocked, and `age` is a relative string rather than a timestamp.
-- The real-model path is tested against a stubbed SDK, not against the live API.
