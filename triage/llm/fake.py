@@ -57,7 +57,9 @@ def parse_turn(raw: dict[str, Any], index: int = 0) -> LLMResponse:
             content=None,
             tool_calls=[
                 ToolCall(
-                    id=f"call_{index}_{n}", name=c["name"], arguments=json.dumps(c["arguments"])
+                    id=f"call_{index}_{n}",
+                    name=c["name"],
+                    arguments=json.dumps(c["arguments"], ensure_ascii=False),
                 )
                 for n, c in enumerate(raw["tool_calls"])
             ],
