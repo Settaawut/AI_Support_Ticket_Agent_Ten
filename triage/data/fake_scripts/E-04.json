@@ -1,0 +1,30 @@
+{
+  "description": "Spam.",
+  "turns": [
+    {
+      "final": {
+        "urgency": "low",
+        "product": "none",
+        "issue_type": "spam",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "Unsolicited prize message with external link",
+            "issue_type": "spam",
+            "action": "route_to_specialist",
+            "target_team": "general_support",
+            "kb_ids": []
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "general_support",
+        "draft_response": "",
+        "kb_citations": [],
+        "reasoning": "Classic prize scam with a suspicious link; not a support request. Route to general support to close; never auto-reply.",
+        "confidence": 0.9
+      }
+    }
+  ]
+}

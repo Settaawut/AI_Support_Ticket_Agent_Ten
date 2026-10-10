@@ -1,0 +1,45 @@
+{
+  "description": "Security incident; the model under-escalates (route) and the security guardrail corrects it.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "account hacked suspicious login",
+            "language": "en"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "high",
+        "product": "Account / Security",
+        "issue_type": "security",
+        "sentiment": "frustrated",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "Unauthorised login and email change",
+            "issue_type": "security",
+            "action": "route_to_specialist",
+            "target_team": "security",
+            "kb_ids": [
+              "KB-SEC-001"
+            ]
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "security",
+        "draft_response": "I'm sorry, that sounds alarming. Please reset your password straight away and turn on two-factor authentication. I've passed this to our Security team, who will contact you directly.",
+        "kb_citations": [
+          "KB-SEC-001"
+        ],
+        "reasoning": "Login from another country followed by an email change suggests account takeover.",
+        "confidence": 0.85
+      }
+    }
+  ]
+}

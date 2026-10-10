@@ -1,0 +1,45 @@
+{
+  "description": "Simple how-to fully answered by the KB.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "reset password",
+            "language": "en"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "low",
+        "product": "Account / Login",
+        "issue_type": "how_to",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "How to reset password",
+            "issue_type": "how_to",
+            "action": "auto_respond",
+            "target_team": "none",
+            "kb_ids": [
+              "KB-ACC-001"
+            ]
+          }
+        ],
+        "action": "auto_respond",
+        "target_team": "none",
+        "draft_response": "You can reset it from the sign-in page: click 'Forgot password' and you'll receive a reset link by email. The link expires after 30 minutes. If your company signs in with SSO, reset the password with your identity provider instead.",
+        "kb_citations": [
+          "KB-ACC-001"
+        ],
+        "reasoning": "Standard how-to question fully answered by KB-ACC-001.",
+        "confidence": 0.95
+      }
+    }
+  ]
+}

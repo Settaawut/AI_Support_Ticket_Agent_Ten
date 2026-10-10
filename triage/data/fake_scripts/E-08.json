@@ -1,0 +1,59 @@
+{
+  "description": "Mixed billing + export issue for an enterprise customer, no outage.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "invoice seat count",
+            "language": "en"
+          }
+        },
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "data export stuck processing",
+            "language": "en"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "medium",
+        "product": "Billing / Data export",
+        "issue_type": "billing",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "March invoice shows 50 seats instead of 45",
+            "issue_type": "billing",
+            "action": "route_to_specialist",
+            "target_team": "billing",
+            "kb_ids": []
+          },
+          {
+            "summary": "CSV data export stuck at 'processing' since yesterday",
+            "issue_type": "bug",
+            "action": "route_to_specialist",
+            "target_team": "technical_support",
+            "kb_ids": [
+              "KB-DATA-001"
+            ]
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "billing",
+        "draft_response": "Thanks for flagging both. I've asked our Billing team to check the seat count on your March invoice against your 45 active seats. Large exports are normally emailed as a download link when ready; since yours has been processing since yesterday, our technical support team will look into it. Both teams will follow up with you directly.",
+        "kb_citations": [
+          "KB-DATA-001"
+        ],
+        "reasoning": "Two independent intents: an invoice seat discrepancy (billing) and a stuck export (technical support). No outage and no money dispute.",
+        "confidence": 0.85
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "description": "Angry tone, cosmetic bug.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "sidebar icons misaligned",
+            "language": "en"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "low",
+        "product": "Web app / Sidebar",
+        "issue_type": "bug",
+        "sentiment": "angry",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "Sidebar icons misaligned",
+            "issue_type": "bug",
+            "action": "route_to_specialist",
+            "target_team": "product_engineering",
+            "kb_ids": []
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "product_engineering",
+        "draft_response": "Sorry about the misaligned sidebar icons, that's frustrating to look at every day. I've passed this to our engineering team as a bug report. If you can share a screenshot and your browser or app version, it will help them reproduce it.",
+        "kb_citations": [],
+        "reasoning": "Cosmetic display issue with no blocked workflow. Strong tone but low impact, so low urgency; route the bug to engineering.",
+        "confidence": 0.85
+      }
+    }
+  ]
+}

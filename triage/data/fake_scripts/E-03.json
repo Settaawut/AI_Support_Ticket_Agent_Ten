@@ -1,0 +1,45 @@
+{
+  "description": "Japanese login problem.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "login error password reset",
+            "language": "en"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "medium",
+        "product": "Account / Login",
+        "issue_type": "account_access",
+        "sentiment": "frustrated",
+        "sentiment_trend": "stable",
+        "language": "other",
+        "intents": [
+          {
+            "summary": "Cannot log in, same error after password reset",
+            "issue_type": "account_access",
+            "action": "route_to_specialist",
+            "target_team": "technical_support",
+            "kb_ids": [
+              "KB-ACC-001"
+            ]
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "technical_support",
+        "draft_response": "ご不便をおかけして申し訳ありません。パスワードをリセットしてもログインできない件を、技術サポートチームに引き継ぎました。表示されるエラーメッセージを教えていただけますと、調査がスムーズになります。担当者より直接ご連絡いたします。",
+        "kb_citations": [
+          "KB-ACC-001"
+        ],
+        "reasoning": "Single user cannot log in even after a password reset (KB-ACC-001 already tried). Needs technical support; reply in Japanese.",
+        "confidence": 0.8
+      }
+    }
+  ]
+}

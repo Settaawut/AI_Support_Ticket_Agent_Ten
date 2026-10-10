@@ -36,7 +36,7 @@ select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-packages = ["triage"]
+packages = ["triage", "eval"]
 
 [[tool.mypy.overrides]]
 module = "tests.*"

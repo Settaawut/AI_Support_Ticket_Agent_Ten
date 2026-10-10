@@ -1,0 +1,30 @@
+{
+  "description": "Vague one-liner; the model is unsure (confidence 0.5), so guardrails over-escalate. Kept to show precision < 1.",
+  "turns": [
+    {
+      "final": {
+        "urgency": "medium",
+        "product": "unknown",
+        "issue_type": "other",
+        "sentiment": "frustrated",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "Something is not working; no details given",
+            "issue_type": "other",
+            "action": "route_to_specialist",
+            "target_team": "technical_support",
+            "kb_ids": []
+          }
+        ],
+        "action": "route_to_specialist",
+        "target_team": "technical_support",
+        "draft_response": "Sorry to hear something isn't working. Could you tell us which part of the app you were using, what you expected to happen, and any error message you saw? A support specialist will then look into it.",
+        "kb_citations": [],
+        "reasoning": "One message with no details about the feature, error or impact. Needs clarification from technical support.",
+        "confidence": 0.5
+      }
+    }
+  ]
+}
