@@ -224,6 +224,16 @@ The eval set (`eval/dataset.jsonl`) has the 3 samples plus 9 edge cases: vague o
 
 `--offline` replays hand-written scripts (`triage/data/fake_scripts/<ticket_id>.json`). It exercises everything *around* the model deterministically: tool execution, parsing, fallbacks and guardrails. It says **nothing about real model quality**. Some scripts deliberately make mistakes (under-escalating a security incident, obeying an injection, low confidence) to show the guardrails and metrics working. Tickets without a script get an "unsure model" default, which the guardrails escalate. Run the eval without `--offline` to measure the real model.
 
+### Verification status
+
+| Verified | How |
+|---|---|
+| ✅ All tests, lint and strict type checks | `ruff`, `mypy`, `pytest` (131 tests) on Linux and Windows 11 / Python 3.12 |
+| ✅ Expected outcomes for the 3 sample tickets | `python -m triage run --all --offline` |
+| ✅ Guardrails correct a wrong model | `eval/wrong_ai_demo.json`, `eval/edge_cases_demo.json` |
+| ✅ Request/response handling of the OpenAI adapter | Unit tests with the SDK stubbed, schema checked against the SDK's own strict-schema converter |
+| ❌ **Not yet run against the live OpenAI API** | No API key was used during development. The first live run is `python -m triage run --all --verbose`; if OpenAI rejects a request, every ticket shows a red `Fallback:` line with the API error instead of crashing. |
+
 ---
 
 ## Project structure
