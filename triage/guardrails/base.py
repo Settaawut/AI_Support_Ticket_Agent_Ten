@@ -9,10 +9,13 @@ never writes audit records: the engine applies the fix, diffs the fields to prod
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Any
+
+from pydantic import BaseModel
 
 from triage.guardrails.signals import detect_language
 from triage.models import (
@@ -109,19 +112,35 @@ def apply_rules(
             raise GuardrailViolation(f"{rule.__name__} tried to lower action or urgency")
         overrides += [
             GuardrailOverride(
-                rule=rule.__name__,
-                field=name,
-                before=_short(getattr(output, name)),
-                after=_short(value),
-                reason=fix.reason,
+                rule=rule.__name__, field=name, before=before, after=after, reason=fix.reason
             )
             for name, value in fix.changes.items()
             if getattr(output, name) != value
+            for before, after in [_describe_change(getattr(output, name), value)]
         ]
         output = updated
     return output, overrides
 
 
-def _short(value: Any, limit: int = 80) -> str:
-    text = str(value)  # StrEnum members render as their value
-    return text if len(text) <= limit else text[: limit - 1] + "…"
+def _describe_change(before: Any, after: Any, limit: int = 80) -> tuple[str, str]:
+    """Readable before/after strings; long values are cut around the first difference."""
+    old, new = _as_text(before), _as_text(after)
+    if max(len(old), len(new)) <= limit:
+        return old, new
+    start = next((i for i, (a, b) in enumerate(zip(old, new, strict=False)) if a != b), 0)
+    start = max(0, min(start, len(old), len(new)) - 20)
+    return _window(old, start, limit), _window(new, start, limit)
+
+
+def _as_text(value: Any) -> str:
+    if isinstance(value, list):
+        return json.dumps(
+            [v.model_dump(mode="json") if isinstance(v, BaseModel) else v for v in value],
+            ensure_ascii=False,
+        )
+    return str(value)  # StrEnum members render as their value
+
+
+def _window(text: str, start: int, limit: int) -> str:
+    snippet = text[start : start + limit]
+    return ("…" if start else "") + snippet + ("…" if start + limit < len(text) else "")

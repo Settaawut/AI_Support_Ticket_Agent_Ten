@@ -17,12 +17,20 @@ _UNRESOLVED_PAYMENT_STATUSES = {"authorization_pending", "payment_failed"}
 
 
 def unverified_citations(out: LLMTriageOutput, ctx: GuardrailContext) -> Fix | None:
-    """The draft may only cite KB articles that a search actually returned in this run."""
-    unknown = [c for c in out.kb_citations if c not in ctx.retrieved_kb_ids]
+    """Only KB articles a search actually returned in this run may be cited."""
+    retrieved = ctx.retrieved_kb_ids
+    cited = set(out.kb_citations).union(*(i.kb_ids for i in out.intents))
+    unknown = sorted(cited - retrieved)
     if not unknown:
         return None
-    kept = [c for c in out.kb_citations if c in ctx.retrieved_kb_ids]
-    return Fix(f"Cited KB ids never returned by search: {unknown}", {"kb_citations": kept})
+    intents = [
+        i.model_copy(update={"kb_ids": [k for k in i.kb_ids if k in retrieved]})
+        for i in out.intents
+    ]
+    return Fix(
+        f"Cited KB ids never returned by search: {unknown}",
+        {"kb_citations": [c for c in out.kb_citations if c in retrieved], "intents": intents},
+    )
 
 
 def no_unsafe_promises(out: LLMTriageOutput, ctx: GuardrailContext) -> Fix | None:

@@ -81,3 +81,10 @@ def test_ticket_text_is_delimited_and_cannot_close_the_block():
     rendered = render_ticket(ticket)
     assert rendered.count("</ticket_data>") == 1
     assert rendered.rstrip().endswith("</ticket_data>")
+
+
+def test_identical_tool_calls_are_served_from_cache():
+    outcome, trace, _ = _run([tool_turn(KB_SEARCH), tool_turn(KB_SEARCH), final()])
+    tool_events = [e for e in trace.events if e.kind == "tool_call"]
+    assert [e.detail["cached"] for e in tool_events] == [False, True]
+    assert outcome.output is not None

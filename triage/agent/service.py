@@ -5,6 +5,7 @@ Pipeline: input guard -> agent loop (LLM + tools) -> fallback if needed -> guard
 
 from __future__ import annotations
 
+import json
 from collections.abc import Sequence
 from dataclasses import dataclass
 
@@ -16,7 +17,10 @@ from triage.llm import LLMFactory
 from triage.models import Ticket, TriageResult
 from triage.observability.trace import Trace, TraceEvent
 from triage.prompts import load_system_prompt
-from triage.tools import ToolRegistry, default_registry
+from triage.tools import ToolOutcome, ToolRegistry, default_registry
+from triage.tools.customer_history import CUSTOMER_HISTORY_TOOL
+
+CUSTOMER_HISTORY = CUSTOMER_HISTORY_TOOL.name
 
 
 @dataclass(frozen=True)
@@ -60,9 +64,8 @@ class TriageService:
             )
             output = fallback_output(ticket, reason)
 
-        context = GuardrailContext(
-            ticket, tuple(outcome.tool_outcomes), self._settings.confidence_threshold
-        )
+        facts = self._guardrail_facts(ticket, outcome.tool_outcomes, trace)
+        context = GuardrailContext(ticket, facts, self._settings.confidence_threshold)
         output, overrides = apply_rules(output, context, self._rules)
         for o in overrides:
             trace.record(
@@ -82,3 +85,19 @@ class TriageService:
             usage=trace.usage(self._settings.prices_per_1m),
         )
         return TriageRun(result, trace)
+
+    def _guardrail_facts(
+        self, ticket: Ticket, outcomes: Sequence[ToolOutcome], trace: Trace
+    ) -> tuple[ToolOutcome, ...]:
+        """Guardrails must not depend on which tools the model chose to call.
+
+        If the model skipped the customer lookup, fetch it here so billing rules still see
+        the account's payment history.
+        """
+        if any(o.name == CUSTOMER_HISTORY and o.ok for o in outcomes):
+            return tuple(outcomes)
+        lookup = self._registry.execute(
+            CUSTOMER_HISTORY, json.dumps({"customer_id": ticket.customer.id})
+        )
+        trace.record(TraceEvent("guardrail_lookup", CUSTOMER_HISTORY, ok=lookup.ok))
+        return (*outcomes, lookup)

@@ -244,8 +244,9 @@ def test_engine_records_one_override_per_changed_field():
     result, overrides = apply_rules(start, ctx("dark mode?"), DEFAULT_RULES)
     assert result.action is Action.ESCALATE_TO_HUMAN
     rules_fired = [o.rule for o in overrides]
-    assert rules_fired[:2] == ["ungrounded_auto_respond", "ungrounded_auto_respond"]
-    assert "low_confidence_escalate" in rules_fired
+    assert {"unverified_citations", "ungrounded_auto_respond", "low_confidence_escalate"} <= set(
+        rules_fired
+    )
     assert all(o.before != o.after for o in overrides)
 
 
@@ -300,3 +301,9 @@ def test_promise_detection(text):
 )
 def test_safe_language_is_not_flagged(text):
     assert not find_promises(text)
+
+
+def test_intent_kb_ids_are_verified_too():
+    fix = R.unverified_citations(out(kb_citations=[]), ctx("dark mode?"))
+    assert fix is not None
+    assert fix.changes["intents"][0].kb_ids == []

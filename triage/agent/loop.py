@@ -6,6 +6,7 @@ The loop never raises for model or tool problems. It returns either a validated 
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -49,6 +50,7 @@ class AgentLoop:
             {"role": "user", "content": render_ticket(ticket)},
         ]
         repair_used = False
+        tool_cache: dict[tuple[str, str], ToolOutcome] = {}
 
         for _ in range(self._max_iterations):
             try:
@@ -60,7 +62,7 @@ class AgentLoop:
             if response.tool_calls:
                 messages.append(_assistant_tool_message(response))
                 for call in response.tool_calls:
-                    result = self._run_tool(call.name, call.arguments, trace)
+                    result = self._run_tool(call.name, call.arguments, trace, tool_cache)
                     outcome.tool_outcomes.append(result)
                     messages.append(
                         {
@@ -94,10 +96,20 @@ class AgentLoop:
         trace.record_llm_call(response.usage.prompt_tokens, response.usage.completion_tokens, sw.ms)
         return response
 
-    def _run_tool(self, name: str, arguments: str, trace: Trace) -> ToolOutcome:
+    def _run_tool(
+        self,
+        name: str,
+        arguments: str,
+        trace: Trace,
+        cache: dict[tuple[str, str], ToolOutcome],
+    ) -> ToolOutcome:
+        """Execute a tool call; an identical repeat call is answered from the run's cache."""
+        key = (name, _canonical(arguments))
+        cached = key in cache
         with Stopwatch() as sw:
-            result = self._registry.execute(name, arguments)
-        detail: dict[str, Any] = {"arguments": arguments}
+            result = cache[key] if cached else self._registry.execute(name, arguments)
+        cache[key] = result
+        detail: dict[str, Any] = {"arguments": arguments, "cached": cached}
         if not result.ok:
             detail["error"] = result.payload["error"]
         trace.record(TraceEvent("tool_call", name, ok=result.ok, latency_ms=sw.ms, detail=detail))
@@ -117,3 +129,10 @@ def _assistant_tool_message(response: LLMResponse) -> ChatMessage:
             for c in response.tool_calls
         ],
     }
+
+
+def _canonical(arguments: str) -> str:
+    try:
+        return json.dumps(json.loads(arguments), sort_keys=True)
+    except json.JSONDecodeError:
+        return arguments

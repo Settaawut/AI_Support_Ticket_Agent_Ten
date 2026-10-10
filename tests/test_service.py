@@ -151,3 +151,22 @@ def test_usage_and_trace_are_recorded(samples, ticket_id):
     assert run.result.usage.llm_calls == 2
     kinds = [e.kind for e in run.trace.events]
     assert kinds[0] == "llm_call" and "tool_call" in kinds
+
+
+def test_guardrails_fetch_customer_history_when_the_model_skipped_it(samples):
+    """Billing rule sees the 3 unresolved payments even though the model never looked."""
+    lazy = final(
+        issue_type="billing",
+        action="route_to_specialist",
+        target_team="billing",
+        kb_citations=[],
+        intents=[],
+        confidence=0.9,
+    )
+    ticket = samples["T-1001"].model_copy(
+        update={"messages": samples["T-1001"].messages[:1]}  # first, calm message only
+    )
+    run = TriageService(lambda _t: FakeLLM([lazy])).triage(ticket)
+    assert run.result.action is Action.ESCALATE_TO_HUMAN
+    assert run.result.tools_used == []  # the lookup is not attributed to the model
+    assert any(e.kind == "guardrail_lookup" for e in run.trace.events)
