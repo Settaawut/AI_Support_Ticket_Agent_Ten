@@ -1,0 +1,51 @@
+{
+  "description": "Demo: the customer lookup fails (unknown id). The agent continues with the KB.",
+  "turns": [
+    {
+      "tool_calls": [
+        {
+          "name": "get_customer_history",
+          "arguments": {
+            "customer_id": "cus_9999"
+          }
+        },
+        {
+          "name": "search_knowledge_base",
+          "arguments": {
+            "query": "reset password",
+            "language": "en"
+          }
+        }
+      ]
+    },
+    {
+      "final": {
+        "urgency": "low",
+        "product": "Account / Login",
+        "issue_type": "how_to",
+        "sentiment": "neutral",
+        "sentiment_trend": "stable",
+        "language": "en",
+        "intents": [
+          {
+            "summary": "How to reset password",
+            "issue_type": "how_to",
+            "action": "auto_respond",
+            "target_team": "none",
+            "kb_ids": [
+              "KB-ACC-001"
+            ]
+          }
+        ],
+        "action": "auto_respond",
+        "target_team": "none",
+        "draft_response": "You can reset it from the sign-in page: click 'Forgot password' and you'll receive a reset link by email. The link expires after 30 minutes.",
+        "kb_citations": [
+          "KB-ACC-001"
+        ],
+        "reasoning": "How-to fully answered by KB-ACC-001. Customer history was unavailable, which does not affect this answer.",
+        "confidence": 0.85
+      }
+    }
+  ]
+}

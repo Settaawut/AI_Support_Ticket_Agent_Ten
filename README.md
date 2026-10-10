@@ -74,6 +74,8 @@ Offline, with the scripted model (`python -m triage run --all --offline`):
 What happens when the **model is wrong** is tested too (`tests/test_service.py`). To see it yourself, run
 `python -m triage run --ticket eval/wrong_ai_demo.json --offline`: the scripted model answers T-1001 and T-1002
 dangerously wrong, and the yellow *Guardrail overrides* table shows each correction.
+`python -m triage run --ticket eval/edge_cases_demo.json --offline --verbose` shows the failure paths: an empty
+ticket, a prompt injection, unparseable model output, and a failing tool.
 
 - **T-1001, model says "low, auto_respond, we'll refund all three charges".** Guardrails turn this into high / escalate_to_human with a safe holding reply. The invented citation is also removed.
 - **T-1002, model says "medium, clear your browser cache", in English.** Guardrails turn this into critical / escalate_to_human / incident_response, and the reply is replaced with a Thai holding reply.

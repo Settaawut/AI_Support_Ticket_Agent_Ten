@@ -78,3 +78,18 @@ def test_wrong_ai_demo_is_corrected_by_guardrails(capsys):
         "th",
     )
     assert t1["guardrail_overrides"] and t2["guardrail_overrides"]
+
+
+def test_edge_case_demo_fails_safe(capsys):
+    """eval/edge_cases_demo.json: empty ticket, injection, broken model output, tool error."""
+    demo = Path(__file__).resolve().parent.parent / "eval" / "edge_cases_demo.json"
+    assert main(["run", "--ticket", str(demo), "--offline", "--json"]) == 0
+    by_id = {r["ticket_id"]: r for r in json.loads(capsys.readouterr().out)}
+    assert by_id["DEMO-EMPTY"]["fallback_reason"] == "ticket has no message text"
+    injection = by_id["DEMO-INJECTION"]
+    assert injection["action"] == "escalate_to_human"
+    assert "APPROVED" not in injection["draft_response"]
+    assert by_id["DEMO-BROKEN-AI"]["fallback_reason"].startswith("Invalid output")
+    assert by_id["DEMO-BROKEN-AI"]["action"] == "escalate_to_human"
+    tool_error = by_id["DEMO-TOOL-ERROR"]
+    assert tool_error["action"] == "auto_respond" and tool_error["kb_citations"] == ["KB-ACC-001"]

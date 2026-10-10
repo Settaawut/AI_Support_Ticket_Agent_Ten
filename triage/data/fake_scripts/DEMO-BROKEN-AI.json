@@ -1,0 +1,11 @@
+{
+  "description": "Demo: the model returns text that is not valid JSON, twice. The service must fall back safely.",
+  "turns": [
+    {
+      "raw_content": "Sure! This looks like a billing question, I'd say medium urgency."
+    },
+    {
+      "raw_content": "{\"urgency\": \"medium\", \"action\": "
+    }
+  ]
+}
