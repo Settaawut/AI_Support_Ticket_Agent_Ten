@@ -30,7 +30,7 @@ def test_configure_logging_writes_jsonl(tmp_path):
     for handler in logger.handlers:
         handler.close()
     logger.handlers = []
-    entry = json.loads(log_file.read_text().splitlines()[-1])
+    entry = json.loads(log_file.read_text(encoding="utf-8").splitlines()[-1])
     assert entry["ticket_id"] == "T-1" and entry["prompt_tokens"] == 100
 
 

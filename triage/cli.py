@@ -8,6 +8,7 @@ python -m triage run --ticket my.json --json --verbose
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import sys
 from collections.abc import Sequence
@@ -73,6 +74,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.json:
         payload = [run.result.model_dump(mode="json") for run in runs]
+        if isinstance(sys.stdout, io.TextIOWrapper):
+            # Windows defaults to a legacy code page when output is redirected; Thai needs UTF-8.
+            sys.stdout.reconfigure(encoding="utf-8")
         sys.stdout.write(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
     else:
         console = Console()
