@@ -18,6 +18,11 @@ Plain Python 3.11+, `openai` SDK, Pydantic v2, `rich`. No agent framework.
 
 ## Quickstart
 
+```bash
+git clone https://github.com/Settaawut/AI_Support_Ticket_Agent_Ten.git
+cd AI_Support_Ticket_Agent_Ten
+```
+
 **macOS / Linux**
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
