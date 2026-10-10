@@ -17,18 +17,37 @@ Built with plain Python 3.11+, the `openai` SDK, Pydantic v2 and `rich`. No agen
 
 ## Quickstart
 
+Requires Python 3.11+ and git.
+
+**macOS / Linux**
+
 ```bash
-python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"                                 # or: make install
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"                     # or: make install
 
-# Offline: no API key needed (scripted FakeLLM, see "Offline mode" below)
-python -m triage run --all --offline
+python -m triage run --all --offline        # no API key needed (scripted FakeLLM)
 
-# Real model
-export OPENAI_API_KEY=sk-...          # never commit keys; .env.example lists every variable
-export OPENAI_MODEL=gpt-4o-mini       # optional, this is the default
+export OPENAI_API_KEY=sk-...                # real model; never commit keys
 python -m triage run --all
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+py -3.12 -m venv .venv                      # any installed 3.11+ works
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass   # lets this window run the activate script
+.venv\Scripts\Activate.ps1
+pip install -e ".[dev]"
+
+python -m triage run --all --offline        # no API key needed (scripted FakeLLM)
+
+$env:OPENAI_API_KEY = "sk-..."              # real model; never commit keys
+python -m triage run --all
+```
+
+Windows has no `make` by default; `make check` is the same as running
+`python -m ruff check .`, `python -m ruff format --check .`, `python -m mypy` and `python -m pytest`.
 
 ### Commands
 
