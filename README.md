@@ -62,6 +62,8 @@ Env vars: `OPENAI_MODEL` (default `gpt-4o-mini`), `TRIAGE_CONFIDENCE_THRESHOLD` 
 | **T-1002** Enterprise, TH | critical | escalate → incident_response | Status page says *operational*, internal feed has an Asia sev1 (`status_conflict: true`). Reply in Thai. |
 | **T-1003** dark mode | low | route → product_engineering | 4 intents: plan question answered from KB; 2 bugs + 1 feature request routed. No over-escalation. |
 
+Offline (scripted model) and live `gpt-4o-mini` give the same urgency, action and team for all three.
+
 Guardrails catching a wrong model: `python -m triage run --ticket eval/wrong_ai_demo.json --offline`.
 Failure paths (empty ticket, injection, broken output, tool error): `eval/edge_cases_demo.json`.
 
@@ -76,7 +78,7 @@ flowchart LR
     G --> O[TriageResult]
 ```
 
-1. **Agent loop** (`agent/loop.py`): tool calling + strict JSON-schema output, validated by Pydantic. Invalid → one repair retry. Timeouts, backoff retries, iteration cap. Never raises.
+1. **Agent loop** (`agent/loop.py`): tool calling + strict JSON-schema output, validated by Pydantic. Invalid → one repair retry. Timeouts, backoff retries, iteration cap; the last turn withholds tools so the model must answer. Never raises.
 2. **Fallback** (`agent/fallback.py`): any failure → escalate_to_human with a holding reply and a logged reason.
 3. **Guardrails** (`guardrails/`): ordered pure rules; can only **raise** action/urgency. Every change is recorded in `guardrail_overrides`.
 

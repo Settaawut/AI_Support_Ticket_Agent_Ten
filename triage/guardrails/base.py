@@ -110,14 +110,16 @@ def apply_rules(
         updated = output.model_copy(update=fix.changes)
         if updated.action.rank < output.action.rank or updated.urgency.rank < output.urgency.rank:
             raise GuardrailViolation(f"{rule.__name__} tried to lower action or urgency")
-        overrides += [
-            GuardrailOverride(
-                rule=rule.__name__, field=name, before=before, after=after, reason=fix.reason
+        for name, value in fix.changes.items():
+            current = getattr(output, name)
+            if current == value:
+                continue
+            before, after = _describe_change(current, value)
+            overrides.append(
+                GuardrailOverride(
+                    rule=rule.__name__, field=name, before=before, after=after, reason=fix.reason
+                )
             )
-            for name, value in fix.changes.items()
-            if getattr(output, name) != value
-            for before, after in [_describe_change(getattr(output, name), value)]
-        ]
         output = updated
     return output, overrides
 

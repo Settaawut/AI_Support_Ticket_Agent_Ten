@@ -31,10 +31,6 @@ class CaseResult:
     def action_ok(self) -> bool:
         return self.action == self.expected_action
 
-    @property
-    def passed(self) -> bool:
-        return self.urgency_ok and self.action_ok
-
     def to_dict(self) -> dict[str, Any]:
         return asdict(self) | {"urgency_ok": self.urgency_ok, "action_ok": self.action_ok}
 
