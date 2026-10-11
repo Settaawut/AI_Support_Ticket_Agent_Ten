@@ -105,6 +105,14 @@ flowchart LR
 - **Eval** (`eval/dataset.jsonl`, 12 tickets incl. Japanese, spam, security, empty, injection): urgency/action accuracy and **escalation recall** (headline; exits 1 on a miss).
 - `--offline` replays scripted model replies: it tests everything *around* the model, not model quality.
 
+**Live eval, `gpt-4o-mini`** (`python -m eval.run_eval`):
+
+| Urgency accuracy | Action accuracy | Escalation recall | Escalation precision | Missed escalations |
+|---|---|---|---|---|
+| 83% | 83% | **100%** | 71% | none |
+
+All three misses lean cautious: E-02 rated one level too urgent, E-03 and E-08 escalated where routing was enough. The live run also exposed a loop the offline mode could not: on unknown customer ids the model kept re-calling `get_customer_history` until the iteration cap. The last turn now withholds tools and asks for the answer.
+
 ## Project structure
 
 ```
