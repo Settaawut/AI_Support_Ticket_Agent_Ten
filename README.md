@@ -49,7 +49,7 @@ python -m triage run --all
 | `run --ticket file.json` | Your own ticket(s), same schema as `triage/data/sample_tickets.json` |
 | `--offline` / `--json` / `--verbose` | FakeLLM / JSON output / per-ticket trace |
 | `python -m eval.run_eval [--offline]` | Labelled eval set + metrics |
-| `make check` | ruff + mypy --strict + 131 pytest tests (Windows: run `ruff`, `mypy`, `pytest` directly) |
+| `make check` | ruff + mypy --strict + 133 pytest tests (Windows: run `ruff`, `mypy`, `pytest` directly) |
 
 Env vars: `OPENAI_MODEL` (default `gpt-4o-mini`), `TRIAGE_CONFIDENCE_THRESHOLD` (0.6), `TRIAGE_MAX_ITERATIONS` (6),
 `TRIAGE_LLM_TIMEOUT_S` (30), `TRIAGE_TEMPERATURE` (0; `none` for reasoning models). See `.env.example`.
@@ -101,7 +101,7 @@ flowchart LR
 
 ## Testing and evaluation
 
-- **131 tests**, all offline, < 2 s: tools, BM25, every guardrail + the "never lowers" invariant, parsing/repair, agent loop failures, retries, OpenAI adapter, injection, PII masking, CLI.
+- **133 tests**, all offline, < 2 s: tools, BM25, every guardrail + the "never lowers" invariant, parsing/repair, agent loop failures, retries, OpenAI adapter, injection, PII masking, CLI.
 - **Eval** (`eval/dataset.jsonl`, 12 tickets incl. Japanese, spam, security, empty, injection): urgency/action accuracy and **escalation recall** (headline; exits 1 on a miss).
 - `--offline` replays scripted model replies: it tests everything *around* the model, not model quality.
 

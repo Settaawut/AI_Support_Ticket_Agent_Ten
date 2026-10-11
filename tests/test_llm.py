@@ -129,6 +129,12 @@ def test_openai_client_wraps_final_failure_as_llm_error():
         client.complete([], [], {})
 
 
+def test_empty_tool_list_is_not_sent():
+    client, sdk = _client([_completion(content="{}")])
+    client.complete([], [], {})
+    assert "tools" not in sdk.chat.completions.kwargs
+
+
 def test_temperature_omitted_when_disabled():
     client, sdk = _client([_completion(content="{}")], temperature=None)
     client.complete([], [], {})

@@ -46,9 +46,10 @@ class OpenAIClient:
         kwargs: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
-            "tools": tools,
             "response_format": response_format,
         }
+        if tools:  # the API rejects an empty tool list
+            kwargs["tools"] = tools
         if self._settings.temperature is not None:  # reasoning models reject temperature
             kwargs["temperature"] = self._settings.temperature
         try:

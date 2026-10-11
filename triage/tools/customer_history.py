@@ -20,7 +20,10 @@ class GetCustomerHistoryArgs(BaseModel):
 def get_customer_history(args: GetCustomerHistoryArgs) -> dict[str, Any]:
     record = load_json("customers.json").get(args.customer_id)
     if record is None:
-        raise ToolError(f"No customer found with id '{args.customer_id}'.")
+        raise ToolError(
+            f"No customer found with id '{args.customer_id}'. Continue the triage without "
+            "customer history; retrying will not help."
+        )
     return {"customer_id": args.customer_id} | {
         k: v for k, v in record.items() if k not in _PII_FIELDS
     }

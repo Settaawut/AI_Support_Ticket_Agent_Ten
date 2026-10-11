@@ -22,6 +22,11 @@ from triage.observability.trace import Stopwatch, Trace, TraceEvent
 from triage.prompts import render_ticket
 from triage.tools import ToolOutcome, ToolRegistry
 
+FINAL_TURN_INSTRUCTION = (
+    "This is your last turn and tools are no longer available. Using what you have, return "
+    "the final JSON object now."
+)
+
 
 @dataclass
 class LoopOutcome:
@@ -52,9 +57,13 @@ class AgentLoop:
         repair_used = False
         tool_cache: dict[tuple[str, str], ToolOutcome] = {}
 
-        for _ in range(self._max_iterations):
+        for turn in range(self._max_iterations):
+            last_turn = turn == self._max_iterations - 1
+            if last_turn and self._max_iterations > 1:
+                # A model that keeps calling tools would otherwise spend the whole budget.
+                messages.append({"role": "user", "content": FINAL_TURN_INSTRUCTION})
             try:
-                response = self._call_llm(messages, trace)
+                response = self._call_llm(messages, trace, with_tools=not last_turn)
             except LLMError as exc:
                 outcome.failure = f"LLM unavailable: {exc}"
                 return outcome
@@ -90,9 +99,10 @@ class AgentLoop:
         outcome.failure = f"No valid final answer within {self._max_iterations} iterations"
         return outcome
 
-    def _call_llm(self, messages: list[ChatMessage], trace: Trace) -> LLMResponse:
+    def _call_llm(self, messages: list[ChatMessage], trace: Trace, with_tools: bool) -> LLMResponse:
+        tools = self._registry.specs() if with_tools else []
         with Stopwatch() as sw:
-            response = self._llm.complete(messages, self._registry.specs(), RESPONSE_FORMAT)
+            response = self._llm.complete(messages, tools, RESPONSE_FORMAT)
         trace.record_llm_call(response.usage.prompt_tokens, response.usage.completion_tokens, sw.ms)
         return response
 

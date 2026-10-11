@@ -30,6 +30,7 @@ class FakeLLM:
     def __init__(self, turns: Sequence[LLMResponse | Exception]) -> None:
         self._turns = list(turns)
         self.requests: list[list[ChatMessage]] = []  # what the agent sent, for assertions
+        self.tool_counts: list[int] = []  # how many tools were offered on each call
 
     def complete(
         self,
@@ -38,6 +39,7 @@ class FakeLLM:
         response_format: dict[str, Any],
     ) -> LLMResponse:
         self.requests.append([dict(m) for m in messages])
+        self.tool_counts.append(len(tools))
         if not self._turns:
             raise LLMError("FakeLLM script exhausted")
         turn = self._turns.pop(0)

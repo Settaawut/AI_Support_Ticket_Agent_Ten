@@ -57,6 +57,13 @@ def test_max_iterations_cap():
     assert sum(e.kind == "llm_call" for e in trace.events) == 3
 
 
+def test_last_turn_withholds_tools_and_asks_for_the_answer():
+    outcome, _, llm = _run([tool_turn(KB_SEARCH), tool_turn(KB_SEARCH), final()], max_iterations=3)
+    assert outcome.output is not None
+    assert llm.requests[2][-1]["content"].startswith("This is your last turn")
+    assert llm.tool_counts == [len(default_registry().specs())] * 2 + [0]
+
+
 def test_llm_outage_fails_safely():
     outcome, _, _ = _run([LLMError("503 after retries")])
     assert outcome.output is None and "LLM unavailable" in (outcome.failure or "")
